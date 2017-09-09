@@ -1,4 +1,4 @@
-(defproject icare
+(defproject dvlopt/icare
             "0.0.0-alpha0"
 
   :description       "Clojure lib for using I2C on linux"
