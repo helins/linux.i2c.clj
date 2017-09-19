@@ -78,7 +78,7 @@
   "Command an I2C bus"
 
 
-  (extended-addressing [this extended?]
+  (extended-addressing [bus extended?]
 
     "Use 10 bits addressing ?
 
@@ -87,7 +87,7 @@
      Throws an IOException if the system call fail.")
 
 
-  (select [this address]
+  (select [bus address]
 
     "Issue an ioctl call for selecting a slave device.
 
@@ -96,18 +96,18 @@
      Cf. `extend-addressing`")
 
 
-  (write-byte [this b]
-              [this register b]
+  (write-byte [bus b]
+              [bus register b]
 
     "Write a single byte directly or to a register.
     
      Throws an IOException if something goes wrong.")
 
 
-  (write-bytes [this ba]
-               [this register ba]
-               [this ba offset n]
-               [this register ba offset n]
+  (write-bytes [bus ba]
+               [bus register ba]
+               [bus ba offset n]
+               [bus register ba offset n]
 
     "Write a byte array directly or to a register.
 
@@ -115,18 +115,18 @@
 
 
 
-  (read-byte [this]
-             [this register]
+  (read-byte [bus]
+             [bus register]
 
     "Read a single byte directly or from a register.
     
      Throws an IOException if something goes wrong.")
 
 
-  (read-bytes [this ba]
-              [this register ba]
-              [this ba offset n]
-              [this register ba offset n]
+  (read-bytes [bus ba]
+              [bus register ba]
+              [bus ba offset n]
+              [bus register ba offset n]
 
     "Read several bytes into a byte array, directly or from a register.
 
@@ -135,17 +135,17 @@
      Throws an IOException if something goes wrong.")
 
 
-  (status [this]
+  (status [bus]
 
     "Returns a map describing the current state of this bus")
 
 
-  (closed? [this]
+  (closed? [bus]
 
     "Is this bus closed ?")
 
 
-  (close [this]
+  (close [bus]
          
     "Close this bus.
     
@@ -165,7 +165,7 @@
   II2C
 
 
-    (extended-addressing [this extended?]
+    (extended-addressing [bus extended?]
       (when (not= extended?
                   -extended?)
         (if (= (CLib/ioctl -fd
@@ -177,10 +177,10 @@
           (throw (IOException. "ioctl call for using 10-bits addressing failed"))
           (set! -extended?
                 extended?)))
-      this)
+      bus)
 
 
-    (select [this address]
+    (select [bus address]
       (when (not= address
                   -slave)
         (if (= (CLib/ioctl -fd
@@ -190,53 +190,53 @@
           (throw (IOException. "ioctl call for selecting a slave device failed"))
           (set! -slave
                 address)))
-      this)
+      bus)
 
 
-    (write-byte [this b]
+    (write-byte [bus b]
       (.write file
               ^long b)
-      this)
+      bus)
 
 
-    (write-byte [this register b]
+    (write-byte [bus register b]
       (.write file
               ^long register)
       (.write file
               ^long b)
-      this)
+      bus)
 
 
-    (write-bytes [this ba]
+    (write-bytes [bus ba]
       (.write file
               ^bytes ba)
-      this)
+      bus)
 
 
-    (write-bytes [this register ba]
+    (write-bytes [bus register ba]
       (.write file
               ^long register)
       (.write file
               ^bytes ba)
-      this)
+      bus)
 
 
-    (write-bytes [this ba offset n]
+    (write-bytes [bus ba offset n]
       (.write file
               ba
               offset
               n)
-      this)
+      bus)
 
 
-    (write-bytes [this register ba offset n]
+    (write-bytes [bus register ba offset n]
       (.write file
               ^long register)
       (.write file
               ba
               offset
               n)
-      this)
+      bus)
 
 
     (read-byte [_]
@@ -287,12 +287,12 @@
       -closed?)
 
 
-    (close [this]
+    (close [bus]
       (when-not -closed?
         (.close file)
         (set! -closed?
               true))
-      this)
+      bus)
 
 
 
