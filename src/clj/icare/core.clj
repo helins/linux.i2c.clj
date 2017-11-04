@@ -1,6 +1,6 @@
 (ns icare.core
 
-  "Use I2C and communicate with slave devices"
+  "Communicate with slave devices using I2C."
 
   {:author "Adam Helinski"}
 
@@ -14,12 +14,12 @@
 
 
 
-;;;;;;;;;;
+;;;;;;;;;; Private
 
 
 (def ^:private -I2C_SLAVE
 
-  "ioctl request for selecting a slave device"
+  "Request for selecting a slave device via `ioctl`."
 
   (NativeLong. 0x0703
                true))
@@ -29,7 +29,7 @@
 
 (def ^:private -I2C_TENBIT
 
-  "ioctl request for choosing between 7 bits and 10 bits addressing"
+  "Request for choosing between 7 bits and 10 bits addressing via `ioctl`."
 
   (NativeLong. 0x0704
                true))
@@ -39,7 +39,7 @@
 
 (def ^:private ^JavaIOFileDescriptorAccess -fd-access
 
-  "Object for accessing the file descriptor of a java file"
+  "Object for accessing the linux file descriptor of a java file."
   
   (SharedSecrets/getJavaIOFileDescriptorAccess))
 
@@ -48,7 +48,7 @@
 
 (defn- -fd
 
-  "Get the linux file descriptor of a java file"
+  "Gets the linux file descriptor of a java file."
 
   [^RandomAccessFile file]
 
@@ -60,7 +60,7 @@
 
 (defn- -lz-seq
 
-  "Create a lazy sequence for reading a file byte per byte"
+  "Creates a lazy sequence for reading a file byte per byte."
 
   [^RandomAccessFile file]
 
@@ -70,38 +70,46 @@
 
 
 
-;;;;;;;;;;
+;;;;;;;;;; API
 
 
 (defprotocol II2C
 
-  "Command an I2C bus"
+  "Commands an I2C bus."
 
 
   (extended-addressing [bus extended?]
 
     "Use 10 bits addressing ?
 
-     Issue an ioctl call for choosing the addressing mode, 7 bits or 10 bits addresses.
+     Issues an ioctl call for choosing the addressing mode, 7 bits or 10 bits addresses.
   
-     Throws an IOException if the system call fail.")
+
+     Throws
+    
+       java.io.IOException
+         If the system call fails.")
 
 
   (select [bus address]
 
-    "Issue an ioctl call for selecting a slave device.
+    "Issues an ioctl call for selecting a slave device.
 
-     Throws an IOException if the system call fail.
+     Throws
 
-     Cf. `extend-addressing`")
+       java.io.IOException
+         If the system call fails.")
 
 
   (write-byte [bus b]
               [bus register b]
 
-    "Write a single byte directly or to a register.
+    "Writes a single byte directly or to a register.
     
-     Throws an IOException if something goes wrong.")
+     Throws
+    
+       java.io.IOException
+         If something goes wrong.")
 
 
   (write-bytes [bus ba]
@@ -109,18 +117,24 @@
                [bus ba offset n]
                [bus register ba offset n]
 
-    "Write a byte array directly or to a register.
+    "Writes a byte array directly or to a register.
 
-     Throws an IOException if something goes wrong.")
+     Throws
+    
+       java.io.IOException
+         If something goes wrong.")
 
 
 
   (read-byte [bus]
              [bus register]
 
-    "Read a single byte directly or from a register.
+    "Reads a single byte directly or from a register.
     
-     Throws an IOException if something goes wrong.")
+     Throws
+     
+       java.io.IOException
+         If something goes wrong.")
 
 
   (read-bytes [bus ba]
@@ -128,16 +142,20 @@
               [bus ba offset n]
               [bus register ba offset n]
 
-    "Read several bytes into a byte array, directly or from a register.
+    "Reads several bytes into a byte array, directly or from a register.
 
      Returns the number of bytes read into the byte array.
 
-     Throws an IOException if something goes wrong.")
+
+     Throws
+
+      java.io.IOException
+        If something goes wrong.")
 
 
   (status [bus]
 
-    "Returns a map describing the current state of this bus")
+    "Returns a map describing the current state of this bus.")
 
 
   (closed? [bus]
@@ -147,9 +165,12 @@
 
   (close [bus]
          
-    "Close this bus.
+    "Closes this bus.
     
-     Throws an IOException if something goes wrong."))
+     Throws
+    
+       java.io.IOException
+         If something goes wrong."))
 
 
 
@@ -174,7 +195,7 @@
                              1
                              0))
                -1)
-          (throw (IOException. "ioctl call for using 10-bits addressing failed"))
+          (throw (IOException. "ioctl call for changing the addressing scheme failed"))
           (set! -extended?
                 extended?)))
       bus)
@@ -311,19 +332,24 @@
 
 (defn open
 
-  "Open an I2C bus at the given path.
+  "Opens an I2C bus at the given path.
 
-   Make sure the user running the program has the permission to actually read
-   and write this file.
-  
+   The user running the program needs R/W permissions for this file.
+
    Returns an I2C object implementing the II2C protocol.
 
-   Throws FileNotFoundException if the file doesn't exists
-          SecurityException     if file permissions are wrong"
 
-  [path]
+   Throws
 
-  (let [file ^RandomAccessFile (RandomAccessFile. ^String path
+     java.lang.SecurityException
+       If the file permissions are wrong.
+  
+     java.io.FileNotFoundException
+       If the file does not exist."
+
+  [^String path]
+
+  (let [file ^RandomAccessFile (RandomAccessFile. path
                                                   "rw")]
     (I2C. path
           file

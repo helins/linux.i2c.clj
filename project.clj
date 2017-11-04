@@ -1,5 +1,5 @@
 (defproject dvlopt/icare
-            "0.0.0-alpha0"
+            "0.0.0-alpha1"
 
   :description       "Clojure lib for using I2C on linux"
   :url               "https://github.com/dvlopt/icare"
@@ -10,12 +10,10 @@
   :dependencies      [[net.java.dev.jna/jna "4.4.0"]]
   :profiles          {:dev {:source-paths ["dev"]
                             :main         user
-                            :dependencies [[org.clojure/clojure    "1.9.0-alpha17"]
-                                           [org.clojure/spec.alpha "0.1.123"]
-                                           [org.clojure/test.check "0.9.0"]
+                            :dependencies [[org.clojure/clojure    "1.9.0-beta3"]
+                                           [org.clojure/test.check "0.10.0-alpha2"]
                                            [criterium              "0.4.4"]]
                             :plugins      [[venantius/ultra "0.5.1"]
-                                           [lein-midje      "3.0.0"]
                                            [lein-virgil     "0.1.6"]
                                            [lein-codox      "0.10.3"]]
                             :codox        {:output-path  "doc/auto"

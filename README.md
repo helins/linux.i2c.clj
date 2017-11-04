@@ -12,9 +12,11 @@ need to install any native dependencies.
 
 Simply add the following dependency to your project :
 
-    [dvlopt/icare "0.0.0-alpha0"]
+    [dvlopt/icare "0.0.0-alpha1"]
 
 ## Usage
+
+Read the full [API](https://dvlopt.github.io/doc/icare/index.html).
 
 ```clj
 (require '[icare.core :as i2c])
@@ -60,8 +62,6 @@ Simply add the following dependency to your project :
 ;; do not forget the close the bus
 (i2c/close bus)
 ```
-
-Read the full [API](https://dvlopt.github.io/doc/icare/index.html).
 
 ## License
 
