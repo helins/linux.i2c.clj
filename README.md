@@ -3,6 +3,9 @@
 [![Clojars
 Project](https://img.shields.io/clojars/v/dvlopt/icare.svg)](https://clojars.org/dvlopt/icare)
 
+<!> This project has been renamed and move to
+[dvlopt.i2c](https://github.com/dvlopt/i2c).
+
 Easily use I2C on linux from your clojure program.
 
 I2C buses are available at '/dev/i2c-N' as char devices where 'N' is the bus
