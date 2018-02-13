@@ -1,5 +1,6 @@
 # dev namespaces
-/dev/
+/dev/*
+!/dev/user.clj
 
 # Codox
 /doc/auto
