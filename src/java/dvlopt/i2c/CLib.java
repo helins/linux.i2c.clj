@@ -1,4 +1,4 @@
-package dvlopt.icare ;
+package dvlopt.i2c ;
 
 
 import com.sun.jna.Native ;
@@ -9,7 +9,7 @@ public class CLib {
 
     public static native int ioctl( int        fd      ,
                                     NativeLong request ,
-                                    long       arg     ) ;
+                                    long       arg     ) ; // TODO Should `arg` be long ?
 
 
     static {
