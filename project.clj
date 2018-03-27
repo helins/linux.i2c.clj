@@ -1,7 +1,7 @@
 (defproject dvlopt/i2c
             "0.0.0"
 
-  :description       "Clojure library for using I2C on linux"
+  :description       "Talk to I2C devices from Linux"
   :url               "https://github.com/dvlopt/icare"
   :license           {:name "Eclipse Public License"
                       :url  "http://www.eclipse.org/legal/epl-v10.html"}

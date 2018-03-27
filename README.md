@@ -8,7 +8,7 @@ program.
 
 On linux, I2C buses are available at '/dev/i2c-N' as char devices where 'N' is the bus
 number. This clojure library allows the user to talk to slave device using such
-a bus.
+a bus. Attention, for the time being, java 9 is not supported.
 
 ## Usage
 
