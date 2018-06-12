@@ -7,7 +7,8 @@
                  :url  "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[dvlopt/void         "0.0.0"]
                  [io.dvlopt/linux-i2c "1.0.0"]]
-  :profiles     {:dev {:source-paths ["dev"]
+  :profiles     {:dev {:source-paths ["dev"
+                                      "examples"]
                        :main         user
                        :dependencies [[criterium              "0.4.4"]
                                       [org.clojure/clojure    "1.9.0"]

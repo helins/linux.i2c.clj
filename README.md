@@ -1,58 +1,64 @@
-# dvlopt.i2c
+# dvlopt.linux.i2c
 
 [![Clojars
-Project](https://img.shields.io/clojars/v/dvlopt/i2c.svg)](https://clojars.org/dvlopt/i2c)
+Project](https://img.shields.io/clojars/v/dvlopt/linux.i2c.svg)](https://clojars.org/dvlopt/linux.i2c)
 
 Easily use [I2C](https://en.wikipedia.org/wiki/I%C2%B2C) from your clojure
 program.
 
-On linux, I2C buses are available at '/dev/i2c-N' as char devices where 'N' is the bus
-number. This clojure library allows the user to talk to slave device using such
-a bus. Attention, for the time being, java 9 is not supported.
+Based on [linux-i2c.java](https://github.com/dvlopt/linux-i2c.java). This
+library provides an API around the standard Linux interface for talking to slave
+devices.
 
 ## Usage
 
-Read the [API](https://dvlopt.github.io/doc/dvlopt/i2c/).
-
-All functions are specified using clojure.spec.
+Read the
+[API](https://dvlopt.github.io/doc/clojure/dvlopt/linux.i2c/index.html).
 
 In short, without error checking :
 
 ```clj
-(require '[dvlopt.i2c :as i2c])
+(require '[dvlopt.linux.i2c       :as i2c]
+         '[dvlopt.linux.i2c.smbus :as smbus])
 
 
-;; Open the needed bus.
+(with-open [^java.lang.AutoCloseable bus (i2c/bus "dev/i2c-1")]
 
-(def bus
-     (::i2c/bus (i2c/open "/dev/i2c-1")))
+    ;; Selects a slave device.
+    (i2c/select-slave bus
+                      0x24)
 
+    ;; Reads 8 bytes.
+    (i2c/read bus
+              8)
+    => [...]
 
-;; Select slave 0x76.
+    ;; Write a few bytes
+    (i2c/write bus
+               [42 1 2 3])
 
-(i2c/select-slave bus
-                  0x76)
+    ;; Does a transactions, several messages without interruption.
 
+    (i2c/transaction bus
+                     [{::i2c/slave-address 0x24
+                       ::i2c/write         [42 1 2 3]}
+                      {::i2c/slave-address 0x24
+                       ::i2c/read          4
+                       ::i2c/tag           :some-read}])
 
-;; Write byte 0xa2 to register 0x55.
+    => {:some-read [...]}
 
-(i2c/write-byte bus
-                0x55
-                0xa2)
+    ;; A few SMBus operations.
 
+    (smbus/quick-write bus)
 
-;; Read 8 bytes into a byte array.
+    (smbus/read-byte bus
+                     42)
 
-(def ba
-     (byte-array 8))
-
-(i2c/read-bytes bus
-                ba)
-
-
-;; Do not forget the close the bus when done.
-
-(i2c/close bus)
+    (smbus/write-block bus
+                       43
+                       [1 2 3])
+    )
 ```
 
 ## License
