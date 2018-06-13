@@ -4,7 +4,13 @@
   
    This library exposes this interface in a clojure idiomatic way.
 
-   Each IO operation might throw is something fails."
+   Each IO operation might throw if something fails.
+
+   Essentially, IO can be performed by directly reading and writing arbitrary bytes, doing
+   transactions (uninterrupted sequence of messages) and using standard SMBus operations.
+
+   Not everything is supported by your driver, refer to `capabilities`. Furthermore, slave devices
+   are often buggy and imperfect."
 
   {:author "Adam Helinski"}
 
@@ -69,11 +75,58 @@
 
 
 
+(defn capabilities
+
+  "Retrieves the capabilities of the given bus.
+
+   Not every driver is capable of doing everything this library offers, specially when it comes to SMBus operations.
+
+   Even then, support can be unperfect. For instance, sometimes transactions are supported but fail when they contain
+   more than 1 message, which makes them quite useless.
+
+   Furthermore, a lot also depends on the slave device.
+  
+   Functions from this library document what need to be checked."
+
+  [^I2CBus bus]
+
+  (let [functionalities (.getFunctionalities bus)]
+    (into #{}
+          (comp (filter (fn only-ok [functionality]
+                          (.can functionalities
+                                functionality)))
+                (map (fn convert [functionality]
+                       (condp identical?
+                              functionality
+                         I2CFunctionality/BLOCK_PROCESS_CALL  :block-process-call
+                         I2CFunctionality/PROCESS_CALL        :process-call
+                         I2CFunctionality/PROTOCOL_MANGLING   :protocol-mangling
+                         I2CFunctionality/QUICK               :quick
+                         I2CFunctionality/READ_BLOCK          :read-block
+                         I2CFunctionality/READ_BYTE           :read-byte
+                         I2CFunctionality/READ_BYTE_DIRECTLY  :read-byte-directly
+                         I2CFunctionality/READ_I2C_BLOCK      :read-i2c-block
+                         I2CFunctionality/READ_WORD           :read-word
+                         I2CFunctionality/SMBUS_PEC           :smbus-pec
+                         I2CFunctionality/TEN_BIT_ADDRESSING  :10-bit-addressing
+                         I2CFunctionality/TRANSACTIONS        :transactions
+                         I2CFunctionality/WRITE_BLOCK         :write-block
+                         I2CFunctionality/WRITE_BYTE          :write-byte
+                         I2CFunctionality/WRITE_BYTE_DIRECTLY :write-byte-directly
+                         I2CFunctionality/WRITE_I2C_BLOCK     :write-i2c-block
+                         I2CFunctionality/WRITE_WORD          :write-word))))
+          (I2CFunctionality/values))))
+
+
+
+
 (defn select-slave
 
   "Selects an I2C slave device.
 
    Affects every IO operations besides transactions where the slave address is given for each message.
+
+   Cf. `capabilities` for :10-bit-addressing.
 
 
    Ex. (select-slave some-bus
@@ -210,6 +263,8 @@
                       by default).
 
   After the transaction is carried out, a map of tag -> bytes is returned for reads.
+
+  Cf. `capabilities` for :10-bit-addressing as well as other booleans flags under the :protocol-mangling capability.
   
   
   Ex. (transaction some-bus

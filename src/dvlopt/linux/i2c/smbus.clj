@@ -4,7 +4,9 @@
    out on an I2C bus. In consequence, the Linux kernel provides SMBus operation defined in the standard.
 
    Those operations performs common interactions. Single byte can be exchanged, as well as words (2 bytes)
-   and blocks (at most 32 bytes at a time). The term \"command\" refers to what is also called a \"register\"."
+   and blocks (at most 32 bytes at a time). The term \"command\" refers to what is also called a \"register\".
+  
+   Not every operation is supported by your driver and supported ones might fail with some inadapted slaves."
 
   {:author "Adam Helinski"}
 
@@ -20,7 +22,9 @@
 
 (defn quick-read
 
-  "Sends a read message without any content."
+  "Sends a read message without any content.
+  
+   Cf. `dvlopt.linux.i2c/capabilities` for the :quick capability."
 
   [^I2CBus bus]
 
@@ -32,7 +36,9 @@
 
 (defn quick-write
 
-  "Sends a write message without any content."
+  "Sends a write message without any content.
+
+   Cf. `dvlopt.linux.i2c/capabilities` for the :quick capability."
 
   [^I2CBus bus]
 
@@ -44,7 +50,9 @@
 
 (defn read-byte-directly
 
-  "Reads a single byte."
+  "Reads a single byte.
+
+   Cf. `dvlopt.linux.i2c/capabilities` for the :read-byte-directly capability."
 
   [^I2CBus bus]
 
@@ -55,7 +63,9 @@
 
 (defn write-byte-directly
 
-  "Writes a single byte."
+  "Writes a single byte.
+
+   Cf. `dvlopt.linux.i2c/capabilities` for the :write-byte-directly capability."
 
   [^I2CBus bus b]
 
@@ -67,7 +77,9 @@
 
 (defn read-byte
 
-  "Reads a byte after specifying a command."
+  "Reads a byte after specifying a command.
+
+   Cf. `dvlopt.linux.i2c/capabilities` for the :read-byte capability."
 
   [^I2CBus bus command]
 
@@ -79,7 +91,9 @@
 
 (defn write-byte
 
-  "Write a byte after specifying a command."
+  "Write a byte after specifying a command.
+
+   Cf. `dvlopt.linux.i2c/capabilities` for the :write-byte capability."
 
   [^I2CBus bus command b]
 
@@ -92,7 +106,9 @@
 
 (defn read-word
 
-  "Read a word after specifying a command."
+  "Read a word after specifying a command.
+
+   Cf. `dvlopt.linux.i2c/capabilities` for the :read-word capability."
 
   [^I2CBus bus command]
 
@@ -104,7 +120,9 @@
 
 (defn write-word
 
-  "Writes a word after specifying a command."
+  "Writes a word after specifying a command.
+
+   Cf. `dvlopt.linux.i2c/capabilities` for the :write-word capability."
 
   [^I2CBus bus command w]
 
@@ -151,7 +169,9 @@
 
 (defn read-block
 
-  "Reads a block after specifying a command."
+  "Reads a block after specifying a command.
+
+   Cf. `dvlopt.linux.i2c/capabilities` for the :read-block capability."
 
   [^I2CBus bus command]
 
@@ -166,7 +186,9 @@
 
 (defn write-block
 
-  "Writes a block after specifying a command as well as the number of bytes in the block."
+  "Writes a block after specifying a command as well as the number of bytes in the block.
+
+   Cf. `dvlopt.linux.i2c/capabilities` for the :write-block capability."
 
   [^I2CBus bus command bs]
 
@@ -182,7 +204,9 @@
 
   "Reads a block of chosen length after specifying a command.
   
-   Not standard but often encountered and supported."
+   Not standard but often encountered and supported.
+
+   Cf. `dvlopt.linux.i2c/capabilities` for the :read-i2c-block capability."
 
   [^I2CBus bus command length]
 
@@ -203,7 +227,9 @@
   
    Unlike `write-block`, does not send a byte count.
   
-   Not standard but often encountered and supported."
+   Not standard but often encountered and supported.
+
+   Cf. `dvlopt.linux.i2c/capabilities` for the :write-i2c-block capability."
 
   [^I2CBus bus command bs]
 
@@ -217,7 +243,9 @@
 
 (defn process-call
 
-  "Performs a simple process call by writing a word acting as an argument and then reading a word acting as the result."
+  "Performs a simple process call by writing a word acting as an argument and then reading a word acting as the result.
+
+   Cf. `dvlopt.linux.i2c/capabilities` for the :process-call capability."
 
   [^I2CBus bus command w]
 
@@ -230,7 +258,9 @@
 
 (defn block-process-call
 
-  "Performs a multi-byte process call by writing a block acting as an argument and then reading a block acting as the result."
+  "Performs a multi-byte process call by writing a block acting as an argument and then reading a block acting as the result.
+
+   Cf. `dvlopt.linux.i2c/capabilities` for the :block-process-call capability."
 
   [^I2CBus bus command bs]
 
