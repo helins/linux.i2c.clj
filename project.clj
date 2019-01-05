@@ -17,5 +17,5 @@
                                       [venantius/ultra "0.5.2"]]
                        :codox        {:output-path  "doc/auto"
                                       :source-paths ["src"]}
-                       :repl-options {:timeout 180000}
-                       :global-vars  {*warn-on-reflection* true}}})
+                       :global-vars  {*warn-on-reflection* true}
+                       :repl-options {:timeout 180000}}})

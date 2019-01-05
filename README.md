@@ -10,6 +10,9 @@ Based on [linux-i2c.java](https://github.com/dvlopt/linux-i2c.java). This
 library provides an API around the standard Linux interface for talking to slave
 devices.
 
+For information about running Clojure on the Raspberry Pi, here is a
+[guide](https://github.com/dvlopt/clojure-raspberry-pi).
+
 ## Usage
 
 Read the
