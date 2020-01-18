@@ -25,7 +25,7 @@ In short, without error checking :
          '[dvlopt.linux.i2c.smbus :as smbus])
 
 
-(with-open [^java.lang.AutoCloseable bus (i2c/bus "dev/i2c-1")]
+(with-open [bus (i2c/bus "dev/i2c-1")]
 
     ;; Selects a slave device.
     (i2c/select-slave bus

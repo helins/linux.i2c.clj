@@ -23,7 +23,8 @@
                                 I2CFlags
                                 I2CFunctionalities
                                 I2CFunctionality
-                                I2CTransaction)))
+                                I2CTransaction)
+           java.lang.AutoCloseable))
 
 
 
@@ -55,6 +56,8 @@
    
    Ex. (bus \"/dev/i2c-1\")"
 
+  ^AutoCloseable
+
   [bus-path]
 
   (if (string? bus-path)
@@ -70,7 +73,8 @@
 
   [^I2CBus bus]
 
-  (.close bus))
+  (.close bus)
+  nil)
 
 
 
