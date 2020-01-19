@@ -1,5 +1,5 @@
 (defproject dvlopt/linux.i2c
-            "1.1.0"
+            "1.1.1"
 
   :description  "Use the standard Linux I2C api"
   :url          "https://github.com/dvlopt/linux.ic2.clj"
