@@ -130,6 +130,9 @@
 
    Affects every IO operations besides transactions where the slave address is given for each message.
 
+   Returns the given I2C bus.
+
+
    Cf. `capabilities` for :10-bit-addressing.
 
 
@@ -154,7 +157,8 @@
                               defaults)
                  (void/obtain ::10-bit?
                               slave-options
-                              defaults))))
+                              defaults))
+   bus))
 
 
 
@@ -163,12 +167,15 @@
 
   "Sets the number of retries when communication fails.
 
-   Does not always produce an effect depending on the underlying driver."
+   Does not always produce an effect depending on the underlying driver.
+  
+   Returns the given I2C bus."
 
   [^I2CBus bus retries]
 
   (.setRetries bus
-               retries))
+               retries)
+  bus)
 
 
 
@@ -177,12 +184,15 @@
 
   "Sets the timeout in milliseconds for slave responses.
 
-   Does not always produce an effect depending on the underlying driver."
+   Does not always produce an effect depending on the underlying driver.
+  
+   Returns the given I2C bus."
 
   [^I2CBus bus timeout-ms]
 
   (.setTimeout bus
-               timeout-ms))
+               timeout-ms)
+  bus)
 
 
 
@@ -342,10 +352,12 @@
 
 (defn write
 
-  "Writes a sequence of bytes."
+  "Writes a sequence of bytes.
+  
+   Returns the given I2C bus."
 
   [^I2CBus bus bs]
 
   (.write bus
           (-seq->buffer bs))
-  nil)
+  bus)
