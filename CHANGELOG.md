@@ -10,9 +10,16 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
-- Namespace keywords differently (see `helins.linux.i2c/default+`)
-
 ### Fixed
+
+
+
+## [2.0.0] - 2021-03-23
+
+### Changed
+
+- Namespaced keywords differently (see `helins.linux.i2c/default+`)
+- Renamed group id to "helins"
 
 
 
@@ -59,7 +66,8 @@ All notable changes to this project will be documented in this file.
 
 
 
-[Unreleased]: https://github.com/helins/linux.i2c.clj/compare/1.1.1...HEAD
+[Unreleased]: https://github.com/helins/linux.i2c.clj/compare/2.0.0...HEAD
+[2.0.0]: https://github.com/helins/linux.i2c.clj/compare/1.1.1...2.0.0
 [1.1.1]: https://github.com/helins/linux.i2c.clj/compare/1.1.0...1.1.1
 [1.1.0]: https://github.com/helins/linux.i2c.clj/compare/1.0.0...1.1.0
 [1.0.0]: https://github.com/helins/linux.i2c.clj/compare/0.0.0...1.0.0
