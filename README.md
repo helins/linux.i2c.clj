@@ -1,47 +1,50 @@
-# dvlopt.linux.i2c
+# Linux.I2C
 
 [![Clojars
-Project](https://img.shields.io/clojars/v/dvlopt/linux.i2c.svg)](https://clojars.org/dvlopt/linux.i2c)
+Project](https://img.shields.io/clojars/v/io.helins/linux.i2c.svg)](https://clojars.org/io.helins/linux.i2c)
 
-Easily use [I2C](https://en.wikipedia.org/wiki/I%C2%B2C) from your clojure
-program.
+[![Cljdoc](https://cljdoc.org/badge/io.helins/linux.i2c)](https://cljdoc.org/d/io.helins/linux.i2c)
 
-Based on [linux-i2c.java](https://github.com/dvlopt/linux-i2c.java). This
-library provides an API around the standard Linux interface for talking to slave
+Easily use [I2C](https://en.wikipedia.org/wiki/I%C2%B2C) and its subset
+[SMBus](https://en.wikipedia.org/wiki/System_Management_Bus) from Clojure JVM.
+
+Based on [linux-i2c.java](https://github.com/helins/linux-i2c.java) which 
+provides an API around the standard Linux interface for talking to slave
 devices.
-
-For information about running Clojure on the Raspberry Pi, here is a
-[guide](https://github.com/dvlopt/clojure-raspberry-pi).
 
 ## Usage
 
-Read the
-[API](https://dvlopt.github.io/doc/clojure/dvlopt/linux.i2c/index.html).
+This is a small overview, the [full API is available on
+Cljdoc](https://cljdoc.org/d/io.helins/linux.i2c).
 
 In short, without error checking :
 
 ```clj
-(require '[dvlopt.linux.i2c       :as i2c]
-         '[dvlopt.linux.i2c.smbus :as smbus])
+(require '[helins.linux.i2c       :as i2c]
+         '[helins.linux.i2c.smbus :as smbus])
 
-
-(with-open [bus (i2c/bus "dev/i2c-1")]
+;; Selects the relevant "/dev/i2c-X" bus from the filesystem.
+;;
+(with-open [bus (i2c/bus "/dev/i2c-1")]
 
     ;; Selects a slave device.
+    ;;
     (i2c/select-slave bus
                       0x24)
 
     ;; Reads 8 bytes.
+    ;;
     (i2c/read bus
               8)
-    => [...]
+    ;; => [...]
 
-    ;; Write a few bytes
+    ;; Writes a few bytes
+    ;;
     (i2c/write bus
                [42 1 2 3])
 
     ;; Does a transactions, several messages without interruption.
-
+    ;;
     (i2c/transaction bus
                      [{::i2c/slave-address 0x24
                        ::i2c/write         [42 1 2 3]}
@@ -49,7 +52,9 @@ In short, without error checking :
                        ::i2c/read          4
                        ::i2c/tag           :some-read}])
 
-    => {:some-read [...]}
+    ;; => {:some-read [...]}
+
+
 
     ;; A few SMBus operations.
 
