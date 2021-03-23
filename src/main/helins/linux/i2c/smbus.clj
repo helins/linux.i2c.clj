@@ -16,7 +16,6 @@
   {:author "Adam Helinski"}
 
   (:import (io.helins.linux.i2c I2CBus
-                                SMBus
                                 SMBus$Block)))
 
 

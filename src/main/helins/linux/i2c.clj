@@ -24,7 +24,6 @@
                                 I2CMessage
                                 I2CFlag
                                 I2CFlags
-                                I2CFunctionalities
                                 I2CFunctionality
                                 I2CTransaction)
            java.lang.AutoCloseable)
@@ -34,17 +33,17 @@
 ;;;;;;;;;; Default values
 
 
-(def defaults
+(def default+
 
   "Defaults values for options used throughout this library."
 
-  {::10-bit?        false
-   ::force?         false
-   ::ignore-nak?    false
-   ::no-read-ack?   false
-   ::no-start?      false
-   ::revise-rw-bit? false
-   ::slave-address  0})
+  {:i2c/bit-10?        false
+   :i2c/force?         false
+   :i2c/ignore-nak?    false
+   :i2c/no-read-ack?   false
+   :i2c/no-start?      false
+   :i2c/revise-rw-bit? false
+   :i2c/slave-address  0})
 
 
 
@@ -56,7 +55,7 @@
 
   (or (get hmap
            k)
-      (get defaults k)))
+      (get default+ k)))
 
 
 ;;;;;;;;;;
@@ -151,8 +150,8 @@
 
    Ex. (select-slave some-bus
                      0x42
-                     {::10-bit? false
-                      ::force?  false})"
+                     {:i2c/bit-10? false
+                      :i2c/force?  false})"
 
   ([bus slave-address]
 
@@ -165,9 +164,9 @@
 
    (.selectSlave bus
                  slave-address
-                 (-obtain ::force?
+                 (-obtain :i2c/force?
                           slave-options)
-                 (-obtain ::10-bit?
+                 (-obtain :i2c/bit-10?
                           slave-options))
    bus))
 
@@ -252,15 +251,15 @@
 
   (let [i2c-flags (I2CFlags.)]
     (when (contains? flags
-                     ::read)
+                     :i2c/read)
       (.set i2c-flags
             I2CFlag/READ))
     (doseq [[flag
-             i2c-flag] [[::10-bit?        I2CFlag/TEN_BIT_ADDRESSING]
-                        [::ignore-nak?    I2CFlag/IGNORE_NAK]
-                        [::no-read-ack?   I2CFlag/NO_READ_ACK]
-                        [::no-start?      I2CFlag/NO_START]
-                        [::revise-rw-bit? I2CFlag/REVISE_RW_BIT]]]
+             i2c-flag] [[:i2c/bit-10?        I2CFlag/TEN_BIT_ADDRESSING]
+                        [:i2c/ignore-nak?    I2CFlag/IGNORE_NAK]
+                        [:i2c/no-read-ack?   I2CFlag/NO_READ_ACK]
+                        [:i2c/no-start?      I2CFlag/NO_START]
+                        [:i2c/revise-rw-bit? I2CFlag/REVISE_RW_BIT]]]
       (when (-obtain flag
                      flags)
         (.set i2c-flags
@@ -278,13 +277,13 @@
   
   Each message specifies if it is a read or a write and consists of options :
 
-    ::10-bit?         Should the 10-bit addressing mode be used ?
-    ::ignore-nak?     Should \"not-acknowledge\" be ignored ?
-    ::no-read-ack?    Should read-acks be ignored ?
-    ::no-start?       Should not issue any more START/address after the initial one.
-    ::revise-wr-bit?  Should send a read flag for writes and vice-versa (for broken slave) ?
-    ::slave-address   Which slave.
-    ::tag             Any value associated with the message, important for reads (the number of the message
+    :i2c/bit-10?         Should the 10-bit addressing mode be used ?
+    :i2c/ignore-nak?     Should \"not-acknowledge\" be ignored ?
+    :i2c/no-read-ack?    Should read-acks be ignored ?
+    :i2c/no-start?       Should not issue any more START/address after the initial one.
+    :i2c/revise-wr-bit?  Should send a read flag for writes and vice-versa (for broken slave) ?
+    :i2c/slave-address   Which slave.
+    :i2c/tag             Any value associated with the message, important for reads (the number of the message
                       by default).
 
   After the transaction is carried out, a map of tag -> bytes is returned for reads.
@@ -293,11 +292,11 @@
   
   
   Ex. (transaction some-bus
-                   [{::slave-address 0x42
-                     ::write         [24 1 2 3]}
-                    {::slave-address 0x42
-                     ::read          3
-                     ::tag           :my-read}])
+                   [{:i2c/slave-address 0x42
+                     :i2c/write         [24 1 2 3]}
+                    {:i2c/slave-address 0x42
+                     :i2c/read          3
+                     :i2c/tag           :my-read}])
 
       => {:my-read [...]}"
 
@@ -308,17 +307,17 @@
         tag->buffer     (reduce (fn prepare-message [tag->buffer [i ^I2CMessage i2c-message message]]
                                   (let [[buffer
                                          tag]   (if (contains? message
-                                                               ::read)
-                                                  [(I2CBuffer. (::read message))
+                                                               :i2c/read)
+                                                  [(I2CBuffer. (:i2c/read message))
                                                    (get message
-                                                        ::tag
+                                                        :i2c/tag
                                                         i)]
-                                                  [(-seq->buffer (::write message))
+                                                  [(-seq->buffer (:i2c/write message))
                                                    nil])]
                                     (.setBuffer i2c-message
                                                 buffer)
                                     (.setAddress i2c-message
-                                                 (-obtain ::slave-address
+                                                 (-obtain :i2c/slave-address
                                                           message))
                                     (.setFlags i2c-message
                                                (-flags message))
