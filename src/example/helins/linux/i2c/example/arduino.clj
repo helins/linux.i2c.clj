@@ -1,16 +1,17 @@
-(ns dvlopt.linux.i2c.examples.arduino
+;; This Source Code Form is subject to the terms of the Mozilla Public
+;; License, v. 2.0. If a copy of the MPL was not distributed with this
+;; file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-  "Meant to be used with an arduino running :
-  
-    https://github.com/dvlopt/linux-i2c.java/tree/master/arduino
+
+(ns helins.linux.i2c.example.arduino
+
+  "Meant to be used with an arduino running [this test program](https://github.com/helins/linux-i2c.java/tree/main/arduino).
   
    The slave device always uses address 0x42."
 
   {:author "Adam Helinski"}
 
-  (:require [dvlopt.linux.i2c :as i2c]))
-
-
+  (:require [helins.linux.i2c :as i2c]))
 
 
 ;;;;;;;;;;
@@ -30,7 +31,7 @@
 
 (defn direct-read
 
-  "Directly reads 1 byte from the slave, which is always 42."
+  "Directly reads 1 byte from the slave, which is always 0x42."
 
   [bus]
 

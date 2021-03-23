@@ -1,4 +1,9 @@
-(ns dvlopt.linux.i2c.smbus
+;; This Source Code Form is subject to the terms of the Mozilla Public
+;; License, v. 2.0. If a copy of the MPL was not distributed with this
+;; file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+
+(ns helins.linux.i2c.smbus
 
   "The SMBus protocol is more or less a subset of I2C. Quite often, SMBus operations can be carried
    out on an I2C bus. In consequence, the Linux kernel provides SMBus operation defined in the standard.
@@ -10,11 +15,9 @@
 
   {:author "Adam Helinski"}
 
-  (:import (io.dvlopt.linux.i2c I2CBus
+  (:import (io.helins.linux.i2c I2CBus
                                 SMBus
                                 SMBus$Block)))
-
-
 
 
 ;;;;;;;;;;
@@ -24,7 +27,7 @@
 
   "Sends a read message without any content.
   
-   Cf. `dvlopt.linux.i2c/capabilities` for the :quick capability."
+   Cf. `helins.linux.i2c/capabilities` for the :quick capability."
 
   [^I2CBus bus]
 
@@ -38,7 +41,7 @@
 
   "Sends a write message without any content.
 
-   Cf. `dvlopt.linux.i2c/capabilities` for the :quick capability."
+   Cf. `helins.linux.i2c/capabilities` for the :quick capability."
 
   [^I2CBus bus]
 
@@ -52,7 +55,7 @@
 
   "Reads a single byte.
 
-   Cf. `dvlopt.linux.i2c/capabilities` for the :read-byte-directly capability."
+   Cf. `helins.linux.i2c/capabilities` for the :read-byte-directly capability."
 
   [^I2CBus bus]
 
@@ -65,7 +68,7 @@
 
   "Writes a single byte.
 
-   Cf. `dvlopt.linux.i2c/capabilities` for the :write-byte-directly capability."
+   Cf. `helins.linux.i2c/capabilities` for the :write-byte-directly capability."
 
   [^I2CBus bus b]
 
@@ -79,7 +82,7 @@
 
   "Reads a byte after specifying a command.
 
-   Cf. `dvlopt.linux.i2c/capabilities` for the :read-byte capability."
+   Cf. `helins.linux.i2c/capabilities` for the :read-byte capability."
 
   [^I2CBus bus command]
 
@@ -93,7 +96,7 @@
 
   "Write a byte after specifying a command.
 
-   Cf. `dvlopt.linux.i2c/capabilities` for the :write-byte capability."
+   Cf. `helins.linux.i2c/capabilities` for the :write-byte capability."
 
   [^I2CBus bus command b]
 
@@ -108,7 +111,7 @@
 
   "Read a word after specifying a command.
 
-   Cf. `dvlopt.linux.i2c/capabilities` for the :read-word capability."
+   Cf. `helins.linux.i2c/capabilities` for the :read-word capability."
 
   [^I2CBus bus command]
 
@@ -122,7 +125,7 @@
 
   "Writes a word after specifying a command.
 
-   Cf. `dvlopt.linux.i2c/capabilities` for the :write-word capability."
+   Cf. `helins.linux.i2c/capabilities` for the :write-word capability."
 
   [^I2CBus bus command w]
 
@@ -171,7 +174,7 @@
 
   "Reads a block after specifying a command.
 
-   Cf. `dvlopt.linux.i2c/capabilities` for the :read-block capability."
+   Cf. `helins.linux.i2c/capabilities` for the :read-block capability."
 
   [^I2CBus bus command]
 
@@ -188,7 +191,7 @@
 
   "Writes a block after specifying a command as well as the number of bytes in the block.
 
-   Cf. `dvlopt.linux.i2c/capabilities` for the :write-block capability."
+   Cf. `helins.linux.i2c/capabilities` for the :write-block capability."
 
   [^I2CBus bus command bs]
 
@@ -206,7 +209,7 @@
   
    Not standard but often encountered and supported.
 
-   Cf. `dvlopt.linux.i2c/capabilities` for the :read-i2c-block capability."
+   Cf. `helins.linux.i2c/capabilities` for the :read-i2c-block capability."
 
   [^I2CBus bus command length]
 
@@ -229,7 +232,7 @@
   
    Not standard but often encountered and supported.
 
-   Cf. `dvlopt.linux.i2c/capabilities` for the :write-i2c-block capability."
+   Cf. `helins.linux.i2c/capabilities` for the :write-i2c-block capability."
 
   [^I2CBus bus command bs]
 
@@ -245,7 +248,7 @@
 
   "Performs a simple process call by writing a word acting as an argument and then reading a word acting as the result.
 
-   Cf. `dvlopt.linux.i2c/capabilities` for the :process-call capability."
+   Cf. `helins.linux.i2c/capabilities` for the :process-call capability."
 
   [^I2CBus bus command w]
 
@@ -260,7 +263,7 @@
 
   "Performs a multi-byte process call by writing a block acting as an argument and then reading a block acting as the result.
 
-   Cf. `dvlopt.linux.i2c/capabilities` for the :block-process-call capability."
+   Cf. `helins.linux.i2c/capabilities` for the :block-process-call capability."
 
   [^I2CBus bus command bs]
 

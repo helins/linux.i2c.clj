@@ -1,4 +1,9 @@
-(ns dvlopt.linux.i2c
+;; This Source Code Form is subject to the terms of the Mozilla Public
+;; License, v. 2.0. If a copy of the MPL was not distributed with this
+;; file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+
+(ns helins.linux.i2c
 
   "The Linux kernel provides a standard interface for performing I2C operations.
   
@@ -14,9 +19,7 @@
 
   {:author "Adam Helinski"}
 
-  (:refer-clojure :exclude [read])
-  (:require [dvlopt.void :as void])
-  (:import (io.dvlopt.linux.i2c I2CBuffer
+  (:import (io.helins.linux.i2c I2CBuffer
                                 I2CBus
                                 I2CMessage
                                 I2CFlag
@@ -24,11 +27,11 @@
                                 I2CFunctionalities
                                 I2CFunctionality
                                 I2CTransaction)
-           java.lang.AutoCloseable))
+           java.lang.AutoCloseable)
+  (:refer-clojure :exclude [read]))
 
 
-
-;;;;;;;;;;
+;;;;;;;;;; Default values
 
 
 (def defaults
@@ -44,6 +47,16 @@
    ::slave-address  0})
 
 
+
+(defn- -obtain
+
+  ;;
+
+  [k hmap]
+
+  (or (get hmap
+           k)
+      (get defaults k)))
 
 
 ;;;;;;;;;;
@@ -152,12 +165,10 @@
 
    (.selectSlave bus
                  slave-address
-                 (void/obtain ::force?
-                              slave-options
-                              defaults)
-                 (void/obtain ::10-bit?
-                              slave-options
-                              defaults))
+                 (-obtain ::force?
+                          slave-options)
+                 (-obtain ::10-bit?
+                          slave-options))
    bus))
 
 
@@ -244,14 +255,14 @@
                      ::read)
       (.set i2c-flags
             I2CFlag/READ))
-    (doseq [[flag i2c-flag] [[::10-bit?        I2CFlag/TEN_BIT_ADDRESSING]
-                             [::ignore-nak?    I2CFlag/IGNORE_NAK]
-                             [::no-read-ack?   I2CFlag/NO_READ_ACK]
-                             [::no-start?      I2CFlag/NO_START]
-                             [::revise-rw-bit? I2CFlag/REVISE_RW_BIT]]]
-      (when (void/obtain flag
-                         flags
-                         defaults)
+    (doseq [[flag
+             i2c-flag] [[::10-bit?        I2CFlag/TEN_BIT_ADDRESSING]
+                        [::ignore-nak?    I2CFlag/IGNORE_NAK]
+                        [::no-read-ack?   I2CFlag/NO_READ_ACK]
+                        [::no-start?      I2CFlag/NO_START]
+                        [::revise-rw-bit? I2CFlag/REVISE_RW_BIT]]]
+      (when (-obtain flag
+                     flags)
         (.set i2c-flags
               i2c-flag)))
     i2c-flags))
@@ -307,9 +318,8 @@
                                     (.setBuffer i2c-message
                                                 buffer)
                                     (.setAddress i2c-message
-                                                 (void/obtain ::slave-address
-                                                              message
-                                                              defaults))
+                                                 (-obtain ::slave-address
+                                                          message))
                                     (.setFlags i2c-message
                                                (-flags message))
                                     (if (nil? tag)
