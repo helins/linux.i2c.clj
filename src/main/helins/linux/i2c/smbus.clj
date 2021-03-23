@@ -19,7 +19,7 @@
                                 SMBus$Block)))
 
 
-;;;;;;;;;;
+;;;;;;;;;; Quick operations
 
 
 (defn quick-read
@@ -48,6 +48,7 @@
           true))
 
 
+;;;;;;;;;; Direct operations
 
 
 (defn read-byte-directly
@@ -75,6 +76,7 @@
                       b))
 
 
+;;;;;;;;;; R/W a single byte
 
 
 (defn read-byte
@@ -104,6 +106,7 @@
               b))
 
 
+;;;;;;;;;; R/W a single word
 
 
 (defn read-word
@@ -133,6 +136,7 @@
               w))
 
 
+;;;;;;;;;; Convert between Clojure and SMBus data
 
 
 (defn- -block->vec
@@ -167,6 +171,7 @@
      block))
 
 
+;;;;;;;;;; R/W blocks of bytes
 
 
 (defn read-block
@@ -241,6 +246,7 @@
   nil)
 
 
+;;;;;;;;;; Remote Procedure Call
 
 
 (defn process-call

@@ -17,18 +17,6 @@
 ;;;;;;;;;;
 
 
-(defn reset
-
-  "Resets the slave device."
-
-  [bus]
-
-  (i2c/write bus
-             [0]))
-
-
-
-
 (defn direct-read
 
   "Directly reads 1 byte from the slave, which is always 0x42."
@@ -37,33 +25,6 @@
 
   (first (i2c/read bus
                    1)))
-
-
-
-
-(defn simple-read
-
-  "Reads 1 byte previously registered using [[simple-write]]."
-
-  [bus]
-
-  (i2c/write bus
-             [1])
-  (first (i2c/read bus
-                   1)))
-
-
-
-
-(defn simple-write
-
-  "Writes and saves 1 byte which can then be retrieved using [[simple-read]]."
-
-  [bus b]
-
-  (i2c/write bus
-             [2 b]))
-
 
 
 
@@ -81,7 +42,6 @@
 
 
 
-
 (defn multi-write
 
   "Writes and saves up to 8 bytes which can then be retrieved using [[multi-write]]."
@@ -92,3 +52,38 @@
              (cons 4
                    (take 8
                          bs))))
+
+
+
+(defn reset
+
+  "Resets the slave device."
+
+  [bus]
+
+  (i2c/write bus
+             [0]))
+
+
+
+(defn simple-read
+
+  "Reads 1 byte previously registered using [[simple-write]]."
+
+  [bus]
+
+  (i2c/write bus
+             [1])
+  (first (i2c/read bus
+                   1)))
+
+
+
+(defn simple-write
+
+  "Writes and saves 1 byte which can then be retrieved using [[simple-read]]."
+
+  [bus b]
+
+  (i2c/write bus
+             [2 b]))

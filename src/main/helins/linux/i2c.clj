@@ -58,7 +58,7 @@
       (get default+ k)))
 
 
-;;;;;;;;;;
+;;;;;;;;;; Opening and closing a bus, querying its capabilities
 
 
 (defn bus
@@ -77,19 +77,6 @@
   (if (string? bus-path)
     (I2CBus. ^String bus-path)
     (I2CBus. ^int    bus-path)))
-
-
-
-
-(defn close
-
-  "Closes an I2C bus."
-
-  [^I2CBus bus]
-
-  (.close bus)
-  nil)
-
 
 
 
@@ -137,6 +124,18 @@
 
 
 
+(defn close
+
+  "Closes an I2C bus."
+
+  [^I2CBus bus]
+
+  (.close bus)
+  nil)
+
+
+;;;;;;;;;; Selecting a slave and setting options
+
 
 (defn select-slave
 
@@ -175,7 +174,6 @@
 
 
 
-
 (defn set-retries
 
   "Sets the number of retries when communication fails.
@@ -189,7 +187,6 @@
   (.setRetries bus
                retries)
   bus)
-
 
 
 
@@ -208,6 +205,7 @@
   bus)
 
 
+;;;;;;;;;; Converting between Clojure and I2C data
 
 
 (defn- -buffer->vec
@@ -220,7 +218,6 @@
         (for [i (range (.-length buffer))]
           (.get buffer
                 i))))
-
 
 
 
@@ -240,7 +237,6 @@
             index
             b))
     buffer))
-
 
 
 
@@ -270,6 +266,7 @@
     i2c-flags))
 
 
+;;;;;;;;;; Transactions
 
 
 (defn transaction
@@ -347,6 +344,7 @@
                tag->buffer)))
 
 
+;;;;;;;;;; R/W arbitrary I2C data
 
 
 (defn read
@@ -359,7 +357,6 @@
     (.read bus
            buffer)
     (-buffer->vec buffer)))
-
 
 
 
