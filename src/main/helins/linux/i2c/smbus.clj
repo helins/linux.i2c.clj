@@ -26,7 +26,7 @@
 
   "Sends a read message without any content.
   
-   Cf. `helins.linux.i2c/capabilities` for the :quick capability."
+   See [[helins.linux.i2c/capability+]] for the :quick capability."
 
   [^I2CBus bus]
 
@@ -40,7 +40,7 @@
 
   "Sends a write message without any content.
 
-   Cf. `helins.linux.i2c/capabilities` for the :quick capability."
+   See [[helins.linux.i2c/capability+]] for the :quick capability."
 
   [^I2CBus bus]
 
@@ -54,7 +54,7 @@
 
   "Reads a single byte.
 
-   Cf. `helins.linux.i2c/capabilities` for the :read-byte-directly capability."
+   See [[helins.linux.i2c/capability+]] for the :read-byte-directly capability."
 
   [^I2CBus bus]
 
@@ -67,7 +67,7 @@
 
   "Writes a single byte.
 
-   Cf. `helins.linux.i2c/capabilities` for the :write-byte-directly capability."
+   See [[helins.linux.i2c/capability+]] for the :write-byte-directly capability."
 
   [^I2CBus bus b]
 
@@ -81,7 +81,7 @@
 
   "Reads a byte after specifying a command.
 
-   Cf. `helins.linux.i2c/capabilities` for the :read-byte capability."
+   See [[helins.linux.i2c/capability+]] for the :read-byte capability."
 
   [^I2CBus bus command]
 
@@ -95,7 +95,7 @@
 
   "Write a byte after specifying a command.
 
-   Cf. `helins.linux.i2c/capabilities` for the :write-byte capability."
+   See [[helins.linux.i2c/capability+]] for the :write-byte capability."
 
   [^I2CBus bus command b]
 
@@ -110,7 +110,7 @@
 
   "Read a word after specifying a command.
 
-   Cf. `helins.linux.i2c/capabilities` for the :read-word capability."
+   See [[helins.linux.i2c/capability+]] for the :read-word capability."
 
   [^I2CBus bus command]
 
@@ -124,7 +124,7 @@
 
   "Writes a word after specifying a command.
 
-   Cf. `helins.linux.i2c/capabilities` for the :write-word capability."
+   See [[helins.linux.i2c/capability+]] for the :write-word capability."
 
   [^I2CBus bus command w]
 
@@ -173,7 +173,7 @@
 
   "Reads a block after specifying a command.
 
-   Cf. `helins.linux.i2c/capabilities` for the :read-block capability."
+   See [[helins.linux.i2c/capability+]] for the :read-block capability."
 
   [^I2CBus bus command]
 
@@ -190,7 +190,7 @@
 
   "Writes a block after specifying a command as well as the number of bytes in the block.
 
-   Cf. `helins.linux.i2c/capabilities` for the :write-block capability."
+   See [[helins.linux.i2c/capability+]] for the :write-block capability."
 
   [^I2CBus bus command bs]
 
@@ -208,7 +208,7 @@
   
    Not standard but often encountered and supported.
 
-   Cf. `helins.linux.i2c/capabilities` for the :read-i2c-block capability."
+   See [[helins.linux.i2c/capability+]] for the :read-i2c-block capability."
 
   [^I2CBus bus command length]
 
@@ -231,7 +231,7 @@
   
    Not standard but often encountered and supported.
 
-   Cf. `helins.linux.i2c/capabilities` for the :write-i2c-block capability."
+   See [[helins.linux.i2c/capability+]] for the :write-i2c-block capability."
 
   [^I2CBus bus command bs]
 
@@ -247,7 +247,7 @@
 
   "Performs a simple process call by writing a word acting as an argument and then reading a word acting as the result.
 
-   Cf. `helins.linux.i2c/capabilities` for the :process-call capability."
+   See [[helins.linux.i2c/capability+]] for the :process-call capability."
 
   [^I2CBus bus command w]
 
@@ -262,7 +262,7 @@
 
   "Performs a multi-byte process call by writing a block acting as an argument and then reading a block acting as the result.
 
-   Cf. `helins.linux.i2c/capabilities` for the :block-process-call capability."
+   See [[helins.linux.i2c/capability+]] for the :block-process-call capability."
 
   [^I2CBus bus command bs]
 

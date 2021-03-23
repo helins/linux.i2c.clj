@@ -14,7 +14,7 @@
    Essentially, IO can be performed by directly reading and writing arbitrary bytes, doing
    transactions (uninterrupted sequence of messages) and using standard SMBus operations.
 
-   Not everything is supported by your driver, refer to `capabilities`. Furthermore, slave devices
+   Not everything is supported by your driver, refer to [[]]. Furthermore, slave devices
    are often buggy and imperfect."
 
   {:author "Adam Helinski"}
@@ -65,8 +65,10 @@
 
   "Opens an I2C bus by providing the number of the bus or a direct path.
   
-   
-   Ex. (bus \"/dev/i2c-1\")"
+   ```clojure
+   (with-open [my-bus (bus \"/dev/i2c-1\")]
+     ...)
+   ```"
 
   ^AutoCloseable
 
@@ -91,9 +93,9 @@
 
 
 
-(defn capabilities
+(defn capability+
 
-  "Retrieves the capabilities of the given bus.
+  "Retrieves the I2C of the given bus.
 
    Not every driver is capable of doing everything this library offers, specially when it comes to SMBus operations.
 
@@ -124,7 +126,7 @@
                          I2CFunctionality/READ_I2C_BLOCK      :read-i2c-block
                          I2CFunctionality/READ_WORD           :read-word
                          I2CFunctionality/SMBUS_PEC           :smbus-pec
-                         I2CFunctionality/TEN_BIT_ADDRESSING  :10-bit-addressing
+                         I2CFunctionality/TEN_BIT_ADDRESSING  :bit-10-addressing
                          I2CFunctionality/TRANSACTIONS        :transactions
                          I2CFunctionality/WRITE_BLOCK         :write-block
                          I2CFunctionality/WRITE_BYTE          :write-byte
@@ -145,13 +147,14 @@
    Returns the given I2C bus.
 
 
-   Cf. `capabilities` for :10-bit-addressing.
+   See [[]] for :bit-10-addressing.
 
-
-   Ex. (select-slave some-bus
-                     0x42
-                     {:i2c/bit-10? false
-                      :i2c/force?  false})"
+   ```clojure
+   (select-slave my-bus
+                 0x42
+                 {:i2c/bit-10? false
+                  :i2c/force?  false})
+   ```"
 
   ([bus slave-address]
 
@@ -288,17 +291,18 @@
 
   After the transaction is carried out, a map of tag -> bytes is returned for reads.
 
-  Cf. `capabilities` for :10-bit-addressing as well as other booleans flags under the :protocol-mangling capability.
-  
-  
-  Ex. (transaction some-bus
-                   [{:i2c/slave-address 0x42
-                     :i2c/write         [24 1 2 3]}
-                    {:i2c/slave-address 0x42
-                     :i2c/read          3
-                     :i2c/tag           :my-read}])
+  See [[capability+]] for 10-bit addressing as well as other booleans flags under the :protocol-mangling capability.
 
-      => {:my-read [...]}"
+  ```clojure
+  (transaction some-bus
+               [{:i2c/slave-address 0x42
+                 :i2c/write         [24 1 2 3]}
+                {:i2c/slave-address 0x42
+                 :i2c/read          3
+                 :i2c/tag           :my-read}])
+
+  ;; => {:my-read [...]}
+  ```"
 
   [^I2CBus bus messages]
 

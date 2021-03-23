@@ -43,7 +43,7 @@
 
 (defn simple-read
 
-  "Reads 1 byte previously registered using `simple-write`."
+  "Reads 1 byte previously registered using [[simple-write]]."
 
   [bus]
 
@@ -57,7 +57,7 @@
 
 (defn simple-write
 
-  "Writes and saves 1 byte which can then be retrieved using `simple-read`."
+  "Writes and saves 1 byte which can then be retrieved using [[simple-read]]."
 
   [bus b]
 
@@ -69,7 +69,7 @@
 
 (defn multi-read
 
-  "Reads several bytes previously sent using `multi-write`."
+  "Reads several bytes previously sent using [[multi-write]]."
 
   [bus]
 
@@ -84,7 +84,7 @@
 
 (defn multi-write
 
-  "Writes and saves up to 8 bytes which can then be retrieved using `multi-write`."
+  "Writes and saves up to 8 bytes which can then be retrieved using [[multi-write]]."
 
   [bus bs]
 
