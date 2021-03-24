@@ -69,6 +69,18 @@ In short, without error checking :
     )
 ```
 
+### Libraries targeting specific devices
+
+Here are examples of libraries leveraging theses utilities for targetting
+specific I2C slave devices:
+
+- [BME280](https://github.com/helins/linux.i2c.bme280.clj), a triple
+    temperature-humidity-pressure sensor
+- [MCP342x](https://github.com/helins/linux.i2c.mcp342x.clj), a family of A/D
+    converters
+- [Horter-I2HAE](https://github.com/helins/linux.i2c.horter-i2hae.clj), a simple
+    A/D converter
+
 ## License
 
 Copyright © 2017 Adam Helinski
